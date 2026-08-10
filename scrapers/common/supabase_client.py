@@ -20,10 +20,11 @@ def get_supabase_client():
         return _supabase_client
 
     supabase_url = os.getenv("SUPABASE_URL")
-    supabase_key = os.getenv("SUPABASE_SERVICE_KEY")
+    # Accept SUPABASE_SECRET_KEY (new Supabase naming sbs_...) or SUPABASE_SERVICE_KEY (classic service_role key)
+    supabase_key = os.getenv("SUPABASE_SECRET_KEY") or os.getenv("SUPABASE_SERVICE_KEY")
 
     if not supabase_url or not supabase_key:
-        logger.warning("SUPABASE_URL or SUPABASE_SERVICE_KEY is not set. Database mutations will be skipped (dry run).")
+        logger.warning("SUPABASE_URL or SUPABASE_SERVICE_KEY/SUPABASE_SECRET_KEY is not set. Database mutations will be skipped (dry run).")
         return None
 
     try:
