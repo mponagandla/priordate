@@ -1,6 +1,8 @@
 name: Scrape Visa Bulletin
 
 on:
+  push:
+    branches: [ main ]
   schedule:
     # Run weekly on weekdays between 8th and 28th of every month at 12:00 UTC
     - cron: '0 12 8-28 * 1-5'

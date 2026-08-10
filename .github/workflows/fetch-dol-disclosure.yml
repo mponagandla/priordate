@@ -1,6 +1,8 @@
 name: Fetch DOL OFLC Disclosure Data
 
 on:
+  push:
+    branches: [ main ]
   schedule:
     # Run quarterly on the 5th of Jan, Apr, Jul, Oct at 12:00 UTC
     - cron: '0 12 5 1,4,7,10 *'

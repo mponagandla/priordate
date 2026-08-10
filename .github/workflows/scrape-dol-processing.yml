@@ -1,6 +1,8 @@
 name: Scrape DOL Processing Times
 
 on:
+  push:
+    branches: [ main ]
   schedule:
     # Run monthly on the 1st of every month at 12:00 UTC
     - cron: '0 12 1 * *'

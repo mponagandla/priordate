@@ -1,6 +1,8 @@
 name: Fetch USCIS I-140 Performance Data
 
 on:
+  push:
+    branches: [ main ]
   schedule:
     # Run quarterly on the 10th of Jan, Apr, Jul, Oct at 12:00 UTC
     - cron: '0 12 10 1,4,7,10 *'
