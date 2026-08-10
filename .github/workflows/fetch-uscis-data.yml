@@ -1,0 +1,41 @@
+name: Fetch USCIS I-140 Performance Data
+
+on:
+  schedule:
+    # Run quarterly on the 10th of Jan, Apr, Jul, Oct at 12:00 UTC
+    - cron: '0 12 10 1,4,7,10 *'
+  workflow_dispatch:
+
+jobs:
+  fetch-uscis-data:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run USCIS I-140 Scraper
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+          ALERT_WEBHOOK_URL: ${{ secrets.ALERT_WEBHOOK_URL }}
+        run: |
+          python scrapers/uscis_i140.py
+
+      - name: Upload Raw Snapshot Artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: raw-uscis-i140
+          path: raw/uscis_i140/
+          retention-days: 90
