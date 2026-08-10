@@ -40,11 +40,16 @@ def parse_dol_page(html_content: str, as_of_date: datetime.date) -> List[Dict[st
         for row in rows:
             cells = [td.get_text(strip=True) for td in row.find_all(["td", "th"])]
             if len(cells) >= 2:
-                stage_candidate = cells[0]
-                date_candidate = cells[1]
+                stage_candidate = cells[0].strip()
+                date_candidate = cells[1].strip()
 
-                # Filter out header rows
-                if "STAGE" in stage_candidate.upper() or "TYPE" in stage_candidate.upper():
+                # Skip empty or whitespace stage names (e.g. spacer rows, icon cells, or table footers)
+                if not stage_candidate:
+                    continue
+
+                # Filter out header/footer rows
+                stage_upper = stage_candidate.upper()
+                if "STAGE" in stage_upper or "TYPE" in stage_upper or "FORM" in stage_upper or "NOTE" in stage_upper or "TOTAL" in stage_upper:
                     continue
 
                 # Parse priority date / filing month being processed
