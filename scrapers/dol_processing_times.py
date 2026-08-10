@@ -122,6 +122,13 @@ def run_dol_processing_times_scraper() -> Dict[str, Any]:
                     "average_days": avg_d
                 })
 
+        # Deduplicate records by unique key (form_type, stage_name, as_of_date) to prevent PostgreSQL 21000 error
+        dedup_map = {}
+        for r in records:
+            key = (r["form_type"], r["stage_name"], r["as_of_date"])
+            dedup_map[key] = r
+        records = list(dedup_map.values())
+
         # 3. Validate schema & bounds
         expected_cols = ["as_of_date", "form_type", "stage_name", "filing_month", "average_days"]
         validate_scraped_data(
