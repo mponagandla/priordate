@@ -209,3 +209,41 @@ ON CONFLICT (name) DO UPDATE SET
     url = EXCLUDED.url,
     description = EXCLUDED.description,
     update_frequency = EXCLUDED.update_frequency;
+
+-- ==========================================
+-- 10. ROW LEVEL SECURITY (RLS) POLICIES
+-- Enables RLS, grants public read SELECT for frontend UI,
+-- and grants full access to service_role / secret keys
+-- ==========================================
+ALTER TABLE data_sources ENABLE ROW LEVEL SECURITY;
+ALTER TABLE ingestion_log ENABLE ROW LEVEL SECURITY;
+ALTER TABLE visa_bulletin_monthly ENABLE ROW LEVEL SECURITY;
+ALTER TABLE dol_processing_times ENABLE ROW LEVEL SECURITY;
+ALTER TABLE employers ENABLE ROW LEVEL SECURITY;
+ALTER TABLE lca_filings ENABLE ROW LEVEL SECURITY;
+ALTER TABLE perm_filings ENABLE ROW LEVEL SECURITY;
+ALTER TABLE i140_annual_stats ENABLE ROW LEVEL SECURITY;
+ALTER TABLE i140_visa_availability_snapshot ENABLE ROW LEVEL SECURITY;
+
+-- Public SELECT read policies for transparency UI
+CREATE POLICY "Allow public read on data_sources" ON data_sources FOR SELECT USING (true);
+CREATE POLICY "Allow public read on ingestion_log" ON ingestion_log FOR SELECT USING (true);
+CREATE POLICY "Allow public read on visa_bulletin_monthly" ON visa_bulletin_monthly FOR SELECT USING (true);
+CREATE POLICY "Allow public read on dol_processing_times" ON dol_processing_times FOR SELECT USING (true);
+CREATE POLICY "Allow public read on employers" ON employers FOR SELECT USING (true);
+CREATE POLICY "Allow public read on lca_filings" ON lca_filings FOR SELECT USING (true);
+CREATE POLICY "Allow public read on perm_filings" ON perm_filings FOR SELECT USING (true);
+CREATE POLICY "Allow public read on i140_annual_stats" ON i140_annual_stats FOR SELECT USING (true);
+CREATE POLICY "Allow public read on i140_visa_availability_snapshot" ON i140_visa_availability_snapshot FOR SELECT USING (true);
+
+-- Service role full access policies
+CREATE POLICY "Allow service_role full access on data_sources" ON data_sources FOR ALL USING (auth.role() = 'service_role');
+CREATE POLICY "Allow service_role full access on ingestion_log" ON ingestion_log FOR ALL USING (auth.role() = 'service_role');
+CREATE POLICY "Allow service_role full access on visa_bulletin_monthly" ON visa_bulletin_monthly FOR ALL USING (auth.role() = 'service_role');
+CREATE POLICY "Allow service_role full access on dol_processing_times" ON dol_processing_times FOR ALL USING (auth.role() = 'service_role');
+CREATE POLICY "Allow service_role full access on employers" ON employers FOR ALL USING (auth.role() = 'service_role');
+CREATE POLICY "Allow service_role full access on lca_filings" ON lca_filings FOR ALL USING (auth.role() = 'service_role');
+CREATE POLICY "Allow service_role full access on perm_filings" ON perm_filings FOR ALL USING (auth.role() = 'service_role');
+CREATE POLICY "Allow service_role full access on i140_annual_stats" ON i140_annual_stats FOR ALL USING (auth.role() = 'service_role');
+CREATE POLICY "Allow service_role full access on i140_visa_availability_snapshot" ON i140_visa_availability_snapshot FOR ALL USING (auth.role() = 'service_role');
+
