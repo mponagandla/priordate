@@ -276,6 +276,13 @@ def run_visa_bulletin_scraper() -> Dict[str, Any]:
                             "raw_status": "C"
                         })
 
+        # Deduplicate records by unique key (category, country, chart_type, bulletin_month)
+        dedup_map = {}
+        for r in records:
+            key = (r["category"], r["country"], r["chart_type"], r["bulletin_month"])
+            dedup_map[key] = r
+        records = list(dedup_map.values())
+
         # Validate against expected schema
         expected_cols = ["bulletin_month", "category", "country", "chart_type", "cutoff_date", "raw_status"]
         validate_scraped_data(

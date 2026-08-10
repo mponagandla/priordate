@@ -62,10 +62,10 @@ def run_uscis_i140_scraper() -> Dict[str, Any]:
 
         annual_stats, snapshots = generate_uscis_i140_sample_data()
 
-        # Cache raw CSV
-        df = pd.DataFrame(annual_stats)
-        df.to_csv(raw_file_path, index=False)
-        print(f"Raw USCIS dataset saved to {raw_file_path}")
+        # Deduplicate annual_stats by (classification, country, fiscal_year, quarter)
+        # Deduplicate snapshots by (as_of_date, classification, country, priority_date_year, service_center)
+        annual_stats = list({(s["classification"], s["country"], s["fiscal_year"], s["quarter"]): s for s in annual_stats}.values())
+        snapshots = list({(sn["as_of_date"], sn["classification"], sn["country"], sn["priority_date_year"], sn["service_center"]): sn for sn in snapshots}.values())
 
         # 1. Validate Annual Stats
         validate_scraped_data(

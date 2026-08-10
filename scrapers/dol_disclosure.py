@@ -137,8 +137,10 @@ def run_dol_disclosure_scraper() -> Dict[str, Any]:
         employers, lca_filings, perm_filings = generate_sample_disclosure_data()
         
         df_lca = pd.DataFrame(lca_filings)
-        df_lca.to_csv(raw_file_path, index=False)
-        print(f"Raw disclosure dataset cached at {raw_file_path}")
+        # Deduplicate employers by clean_name, LCA by case_number, PERM by case_number
+        employers = list({e["clean_name"]: e for e in employers}.values())
+        lca_filings = list({f["case_number"]: f for f in lca_filings}.values())
+        perm_filings = list({p["case_number"]: p for p in perm_filings}.values())
 
         # 1. Validate Employer Data
         validate_scraped_data(
