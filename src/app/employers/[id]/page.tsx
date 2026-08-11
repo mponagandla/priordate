@@ -182,26 +182,36 @@ export default function EmployerProfilePage() {
                 </div>
 
                 <div className="space-y-4">
-                  {profileData.wages.map((w: any, idx: number) => (
-                    <div key={idx} className="glass-card p-4 rounded-lg space-y-2">
-                      <div className="flex justify-between items-center font-sans text-xs font-medium text-on-surface">
-                        <span className="line-clamp-1">{w.jobTitle}</span>
-                        <span className="font-mono text-primary font-bold text-sm ml-2">
-                          ${w.wageFrom.toLocaleString()} - ${w.wageTo.toLocaleString()}
-                        </span>
-                      </div>
+                  {(() => {
+                    const maxWage = Math.max(
+                      ...profileData.wages.map((w: any) => w.wageTo || w.wageFrom || 200000),
+                      200000
+                    );
 
-                      {/* Visual Bar representation */}
-                      <div className="h-2 w-full bg-surface-container-highest rounded-full overflow-hidden">
-                        <div
-                          style={{
-                            width: `${Math.min(100, Math.max(30, (w.wageFrom / 300000) * 100))}%`,
-                          }}
-                          className="h-full bg-gradient-to-r from-primary-container to-primary rounded-full"
-                        ></div>
-                      </div>
-                    </div>
-                  ))}
+                    return profileData.wages.map((w: any, idx: number) => {
+                      const barWidth = Math.min(100, Math.max(20, Math.round((w.wageTo / maxWage) * 100)));
+
+                      return (
+                        <div key={idx} className="glass-card p-4 rounded-lg space-y-2">
+                          <div className="flex justify-between items-center font-sans text-xs font-medium text-on-surface">
+                            <span className="line-clamp-1">{w.jobTitle}</span>
+                            <span className="font-mono text-primary font-bold text-sm ml-2">
+                              ${w.wageFrom.toLocaleString()} - ${w.wageTo.toLocaleString()}
+                            </span>
+                          </div>
+
+                          {/* Visual Bar representation */}
+                          <div className="h-2 w-full bg-surface-container-highest/60 rounded-full overflow-hidden p-0.5 border border-white/5">
+                            <div
+                              style={{ width: `${barWidth}%` }}
+                              className="h-full bg-gradient-to-r from-primary-container to-primary rounded-full transition-all duration-500"
+                              title={`${w.jobTitle}: $${w.wageFrom.toLocaleString()} - $${w.wageTo.toLocaleString()}`}
+                            ></div>
+                          </div>
+                        </div>
+                      );
+                    });
+                  })()}
                 </div>
               </div>
 
