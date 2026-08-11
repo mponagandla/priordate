@@ -17,6 +17,15 @@ export default function HomePage() {
   const [cohortData, setCohortData] = useState<any>(null);
 
   // Initialize categories from database
+  // Fetch Cohort Analysis data
+  const handleAnalyze = async () => {
+    setLoading(true);
+    const data = await getCohortAnalysis(category, priorityDate, "All Other Countries");
+    setCohortData(data);
+    setLoading(false);
+  };
+
+  // Initialize categories and run initial analysis once on mount
   useEffect(() => {
     async function loadOptions() {
       const opts = await getClassificationOptions();
@@ -26,20 +35,9 @@ export default function HomePage() {
       }
     }
     loadOptions();
-  }, []);
-
-  // Fetch Cohort Analysis data
-  const handleAnalyze = async () => {
-    setLoading(true);
-    const data = await getCohortAnalysis(category, priorityDate, "All Other Countries");
-    setCohortData(data);
-    setLoading(false);
-  };
-
-  useEffect(() => {
     handleAnalyze();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [category, priorityDate]);
+  }, []);
 
   return (
     <div className="relative min-h-screen pb-margin-lg overflow-hidden">

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { searchEmployers, Employer } from "@/lib/dataService";
 import InfoTooltip from "./InfoTooltip";
+import ShadcnDatePicker from "./ShadcnDatePicker";
 
 interface FilterBarProps {
   categories: string[];
@@ -88,7 +89,7 @@ export default function FilterBar({
           </div>
         </div>
 
-        {/* Priority Date Picker */}
+        {/* Shadcn-Style Priority Date Picker */}
         <div className="space-y-2">
           <div className="flex items-center gap-1.5">
             <label className="font-mono text-label-mono text-secondary-fixed-dim uppercase tracking-wider block text-xs">
@@ -96,14 +97,10 @@ export default function FilterBar({
             </label>
             <InfoTooltip text="The official priority date when your PERM ETA-9089 was received by DOL or your I-140 petition was received by USCIS." />
           </div>
-          <div className="relative">
-            <input
-              type="date"
-              value={priorityDate.length === 7 ? `${priorityDate}-15` : priorityDate}
-              onChange={(e) => onPriorityDateChange(e.target.value)}
-              className="w-full bg-surface-container-highest/60 border border-outline-variant/50 rounded-lg py-3 px-4 text-on-surface focus:border-primary-container focus:ring-1 focus:ring-primary-container transition-colors backdrop-blur-md font-sans text-body-md [color-scheme:dark]"
-            />
-          </div>
+          <ShadcnDatePicker
+            value={priorityDate}
+            onChange={onPriorityDateChange}
+          />
         </div>
 
         {/* Service Center Dropdown */}
