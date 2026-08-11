@@ -32,10 +32,10 @@ def get_dol_oflc_disclosure_records() -> Tuple[List[Dict[str, Any]], List[Dict[s
     """
     Returns authentic Department of Labor OFLC disclosure statistics for major U.S. sponsoring employers.
     Includes PERM certification counts, H-1B LCA counts, and wage rates disaggregated by job title.
+    Note: 'id' is omitted so Postgres auto-manages UUID generation on insert/upsert.
     """
     employers = [
         {
-            "id": "google-llc",
             "clean_name": "Google LLC",
             "legal_name": "Google LLC",
             "fein": "133742069",
@@ -47,7 +47,6 @@ def get_dol_oflc_disclosure_records() -> Tuple[List[Dict[str, Any]], List[Dict[s
             "total_perm_count": 3890,
         },
         {
-            "id": "microsoft-corporation",
             "clean_name": "Microsoft Corporation",
             "legal_name": "Microsoft Corporation",
             "fein": "911144442",
@@ -59,7 +58,6 @@ def get_dol_oflc_disclosure_records() -> Tuple[List[Dict[str, Any]], List[Dict[s
             "total_perm_count": 3410,
         },
         {
-            "id": "amazon-com-services-llc",
             "clean_name": "Amazon.com Services LLC",
             "legal_name": "Amazon.com Services LLC",
             "fein": "412345678",
@@ -71,7 +69,6 @@ def get_dol_oflc_disclosure_records() -> Tuple[List[Dict[str, Any]], List[Dict[s
             "total_perm_count": 5120,
         },
         {
-            "id": "meta-platforms-inc",
             "clean_name": "Meta Platforms Inc",
             "legal_name": "Meta Platforms Inc",
             "fein": "201665432",
@@ -83,7 +80,6 @@ def get_dol_oflc_disclosure_records() -> Tuple[List[Dict[str, Any]], List[Dict[s
             "total_perm_count": 2450,
         },
         {
-            "id": "apple-inc",
             "clean_name": "Apple Inc",
             "legal_name": "Apple Inc",
             "fein": "942404110",
@@ -95,7 +91,6 @@ def get_dol_oflc_disclosure_records() -> Tuple[List[Dict[str, Any]], List[Dict[s
             "total_perm_count": 1980,
         },
         {
-            "id": "intel-corporation",
             "clean_name": "Intel Corporation",
             "legal_name": "Intel Corporation",
             "fein": "941656000",
