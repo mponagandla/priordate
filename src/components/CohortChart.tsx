@@ -1,6 +1,5 @@
-"use client";
-
 import React from "react";
+import { parsePriorityDate } from "@/lib/dataService";
 
 interface CohortChartProps {
   classification: string;
@@ -27,10 +26,12 @@ export default function CohortChart({
   latestCutoff,
   dataAvailable = true,
 }: CohortChartProps) {
-  // Extract month name and calculate dynamic marker X position (10% to 90%)
-  const dateObj = new Date(priorityDateString ? `${priorityDateString}-01` : `${priorityYear}-10-01`);
-  const validDate = isNaN(dateObj.getTime()) ? new Date("2022-10-01") : dateObj;
-  const monthName = validDate.toLocaleString("en-US", { month: "short" });
+  // Parse Priority Date cleanly supporting both full ISO dates ("YYYY-MM-DD") and month strings ("YYYY-MM")
+  const { dateObj: validDate, year: parsedYear, formattedStr } = parsePriorityDate(
+    priorityDateString,
+    priorityYear
+  );
+  const displayYear = priorityYear || parsedYear || 2022;
   const monthNum = validDate.getMonth(); // 0 to 11
   const monthPct = Math.min(90, Math.max(10, Math.round((monthNum / 11) * 80) + 10));
   const svgXPos = Math.round((monthPct / 100) * 800);
@@ -41,13 +42,13 @@ export default function CohortChart({
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
         <div>
           <h3 className="font-sans text-headline-md text-on-surface flex items-center gap-2">
-            <span>FY{priorityYear} Petition Outcomes</span>
+            <span>FY{displayYear} Petition Outcomes</span>
             <span className="text-xs font-mono font-normal px-2.5 py-0.5 rounded-full bg-primary-container/10 border border-primary-container/30 text-primary-container">
               Annual Aggregate
             </span>
           </h3>
           <p className="font-sans text-xs text-on-surface-variant mt-1">
-            USCIS annual report totals for {classification} filed in FY{priorityYear}
+            USCIS annual report totals for {classification} filed in FY{displayYear}
           </p>
         </div>
 
@@ -76,7 +77,7 @@ export default function CohortChart({
       {/* Outcome Distribution Bar */}
       <div className="space-y-3 mb-8">
         <div className="flex justify-between text-xs font-mono text-secondary-fixed-dim">
-          <span>FY{priorityYear} Total Filings: {totalCohort.toLocaleString()}</span>
+          <span>FY{displayYear} Total Filings: {totalCohort.toLocaleString()}</span>
           <span>Visa Bulletin Status: {isCurrent ? "Current (C)" : `Cutoff: ${latestCutoff}`}</span>
         </div>
 
@@ -169,7 +170,7 @@ export default function CohortChart({
           className="absolute top-[8%] transform -translate-x-1/2 -translate-y-full flex flex-col items-center z-10 transition-all duration-500"
         >
           <div className="bg-tertiary-fixed-dim/20 border border-tertiary-fixed-dim text-tertiary font-mono text-label-mono px-3 py-1 rounded backdrop-blur-sm whitespace-nowrap shadow-lg">
-            Your Priority Date: {monthName} {priorityYear}
+            Your Priority Date: {formattedStr}
           </div>
           <div className="w-0 h-0 border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent border-t-[8px] border-t-tertiary-fixed-dim"></div>
         </div>
@@ -177,10 +178,10 @@ export default function CohortChart({
 
       {/* Timeline X Axis */}
       <div className="flex justify-between px-2 mt-3 font-mono text-label-mono text-[11px] text-on-surface-variant">
-        <span>Q1 FY{priorityYear}</span>
-        <span>Q2 FY{priorityYear}</span>
-        <span>Q3 FY{priorityYear}</span>
-        <span>Q4 FY{priorityYear}</span>
+        <span>Q1 FY{displayYear}</span>
+        <span>Q2 FY{displayYear}</span>
+        <span>Q3 FY{displayYear}</span>
+        <span>Q4 FY{displayYear}</span>
       </div>
 
       {/* Data Source Notice */}

@@ -90,6 +90,42 @@ export interface DolProcessingTime {
 }
 
 /**
+ * Safely parses priority date strings ("YYYY-MM-DD" or "YYYY-MM") into a valid Date object, Year, and formatted string.
+ */
+export function parsePriorityDate(priorityDateString: string, fallbackYear: number = 2022) {
+  if (!priorityDateString) {
+    const defaultDate = new Date(`${fallbackYear}-10-15`);
+    return {
+      dateObj: defaultDate,
+      year: fallbackYear,
+      formattedStr: `Oct 15, ${fallbackYear}`,
+    };
+  }
+
+  let d: Date;
+  if (priorityDateString.length === 7) {
+    // "YYYY-MM" format
+    d = new Date(`${priorityDateString}-15`);
+  } else {
+    // "YYYY-MM-DD" format
+    d = new Date(priorityDateString);
+  }
+
+  if (isNaN(d.getTime())) {
+    d = new Date(`${fallbackYear}-10-15`);
+  }
+
+  const year = d.getFullYear() || fallbackYear;
+  const formattedStr = d.toLocaleDateString("en-US", {
+    month: "short",
+    day: priorityDateString.length > 7 ? "numeric" : undefined,
+    year: "numeric",
+  });
+
+  return { dateObj: d, year, formattedStr };
+}
+
+/**
  * Maps UI Category selections to Database Classification codes.
  */
 export function mapCategoryToDbCodes(category: string): string[] {
@@ -162,12 +198,11 @@ export async function getClassificationOptions(): Promise<string[]> {
 // 2. Fetch Cohort Stats for specified category, date, and country
 export async function getCohortAnalysis(
   classification: string,
-  priorityDateString: string, // e.g. "2022-10" or "2022-10-15"
+  priorityDateString: string, // e.g. "2022-10-15" or "2022-10"
   country: string = 'All Other Countries'
 ) {
   try {
-    const pdDate = new Date(priorityDateString ? `${priorityDateString}-01` : '2022-10-01');
-    const priorityYear = isNaN(pdDate.getFullYear()) ? 2022 : pdDate.getFullYear();
+    const { dateObj: pdDate, year: priorityYear } = parsePriorityDate(priorityDateString);
     const dbCodes = mapCategoryToDbCodes(classification);
     const vbCat = mapCategoryToVbCategory(classification);
 
@@ -264,7 +299,7 @@ export async function getCohortAnalysis(
     return {
       classification,
       priorityYear,
-      priorityDateString: priorityDateString || `${priorityYear}-10`,
+      priorityDateString: priorityDateString || `${priorityYear}-10-15`,
       approvedCount: approved,
       deniedCount: denied,
       pendingCount: pending,
