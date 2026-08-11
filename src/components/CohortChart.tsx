@@ -38,7 +38,7 @@ export default function CohortChart({
   const svgXPos = Math.round((monthPct / 100) * 800);
 
   return (
-    <div className="glass-panel rounded-xl p-6 min-h-[360px] flex flex-col relative overflow-hidden">
+    <div className="glass-panel rounded-xl p-6 min-h-[360px] flex flex-col relative z-10">
       {/* Header & Legend */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
         <div>

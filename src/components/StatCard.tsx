@@ -27,7 +27,7 @@ export default function StatCard({
 }: StatCardProps) {
   return (
     <div
-      className={`glass-card rounded-lg p-4 md:p-5 flex flex-col justify-between glow-border transition-all duration-300 overflow-hidden ${
+      className={`glass-card rounded-lg p-4 md:p-5 flex flex-col justify-between glow-border transition-all duration-300 relative z-10 ${
         highlight
           ? "ring-1 ring-primary-container/50 bg-primary-container/5 shadow-[0_0_20px_rgba(0,209,255,0.15)]"
           : ""
