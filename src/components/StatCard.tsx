@@ -1,5 +1,6 @@
 import React from "react";
 import DataSourceBadge from "./DataSourceBadge";
+import InfoTooltip from "./InfoTooltip";
 
 interface StatCardProps {
   label: string;
@@ -9,6 +10,7 @@ interface StatCardProps {
   highlight?: boolean;
   sourceName?: string;
   subtitle?: string;
+  infoText?: string;
   className?: string;
 }
 
@@ -20,6 +22,7 @@ export default function StatCard({
   highlight = false,
   sourceName,
   subtitle,
+  infoText,
   className = "",
 }: StatCardProps) {
   return (
@@ -42,8 +45,10 @@ export default function StatCard({
                 {icon}
               </span>
             )}
-            {label}
+            <span>{label}</span>
           </span>
+
+          {infoText && <InfoTooltip text={infoText} position="top" />}
         </div>
 
         <div className="flex items-baseline gap-2 my-1">

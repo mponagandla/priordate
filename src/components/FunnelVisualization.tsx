@@ -1,4 +1,5 @@
 import React from "react";
+import InfoTooltip from "./InfoTooltip";
 
 interface FunnelVisualizationProps {
   employerName: string;
@@ -23,6 +24,7 @@ export default function FunnelVisualization({
         <div>
           <h3 className="font-sans text-headline-md text-on-surface flex items-center gap-2">
             <span>Immigration Pipeline Funnel</span>
+            <InfoTooltip text="Progression of employment-based green card petitions from Department of Labor PERM filing to USCIS final approval." />
           </h3>
           <p className="font-sans text-xs text-on-surface-variant mt-1">
             Tracking PERM to Green Card stage conversions for {employerName}

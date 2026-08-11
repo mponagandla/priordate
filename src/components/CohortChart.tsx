@@ -1,5 +1,6 @@
 import React from "react";
 import { parsePriorityDate } from "@/lib/dataService";
+import InfoTooltip from "./InfoTooltip";
 
 interface CohortChartProps {
   classification: string;
@@ -46,6 +47,7 @@ export default function CohortChart({
             <span className="text-xs font-mono font-normal px-2.5 py-0.5 rounded-full bg-primary-container/10 border border-primary-container/30 text-primary-container">
               Annual Aggregate
             </span>
+            <InfoTooltip text="Proportion of I-140 petitions Approved, Pending, or Denied by USCIS during this fiscal year cohort." />
           </h3>
           <p className="font-sans text-xs text-on-surface-variant mt-1">
             USCIS annual report totals for {classification} filed in FY{displayYear}

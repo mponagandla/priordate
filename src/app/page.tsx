@@ -114,6 +114,7 @@ export default function HomePage() {
                     value={cohortData.totalCohort}
                     icon="group"
                     sourceName="USCIS I-140 Statistics"
+                    infoText="Total count of I-140 immigrant petitions received by USCIS for this classification in this fiscal year."
                   />
                   <StatCard
                     label="% Approved"
@@ -121,6 +122,7 @@ export default function HomePage() {
                     unit="%"
                     icon="verified"
                     sourceName="USCIS I-140 Statistics"
+                    infoText="Percentage of total petitions in this cohort that have been certified/approved by USCIS so far."
                   />
                   <StatCard
                     label="Outcome Rate"
@@ -128,12 +130,14 @@ export default function HomePage() {
                     icon="analytics"
                     highlight={true}
                     subtitle={`Approved so far in FY${cohortData.priorityYear}`}
+                    infoText="The overall approval velocity for this preference category and fiscal year cohort."
                   />
                   <StatCard
                     label="Visa Status"
                     value={cohortData.isCurrent ? "Current" : cohortData.latestCutoff}
                     icon="speed"
                     sourceName="Visa Bulletin"
+                    infoText="Current status according to the Department of State Visa Bulletin (shows 'Current' if priority dates are open, or active cutoff date)."
                   />
                 </div>
 

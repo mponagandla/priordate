@@ -5,6 +5,7 @@ import { useSearchParams, useRouter } from "next/navigation";
 import FilterBar from "@/components/FilterBar";
 import StatCard from "@/components/StatCard";
 import DataSourceBadge from "@/components/DataSourceBadge";
+import InfoTooltip from "@/components/InfoTooltip";
 import { getTrendsData, getClassificationOptions } from "@/lib/dataService";
 import { toPng } from "html-to-image";
 
@@ -164,6 +165,7 @@ function TrendsContent() {
             value={totalVolume > 0 ? totalVolume.toLocaleString() : "745,000+"}
             icon="trending_up"
             sourceName="USCIS I-140 Statistics"
+            infoText="Cumulative count of I-140 petitions filed across all USCIS service centers over the last 5 fiscal years."
           />
           <StatCard
             label="Average Approval Rate"
@@ -171,6 +173,7 @@ function TrendsContent() {
             unit="%"
             icon="check_circle"
             highlight={true}
+            infoText="Mean approval percentage across all petitions processed in this preference category over 5 years."
           />
           <StatCard
             label="Avg. PERM Processing"
@@ -178,12 +181,14 @@ function TrendsContent() {
             unit="days"
             icon="schedule"
             sourceName="DOL Processing Times"
+            infoText="Department of Labor FLAG system average analyst review duration in calendar days."
           />
           <StatCard
             label="Data Freshness"
             value="Quarterly"
             icon="sync"
             sourceName="DOL &amp; USCIS Open Data"
+            infoText="Frequency of official open data updates published by Department of Labor and USCIS."
           />
         </div>
 
@@ -195,6 +200,7 @@ function TrendsContent() {
               <div>
                 <h3 className="font-sans text-headline-md text-xl font-bold text-on-surface flex items-center gap-2">
                   <span>Filing Volume &amp; Approvals Trend ({category})</span>
+                  <InfoTooltip text="Year-over-year comparison of petitions received, approved, and denied." />
                 </h3>
                 <p className="font-sans text-xs text-on-surface-variant mt-0.5">
                   Annual count of petitions received, approved, and denied
@@ -267,8 +273,9 @@ function TrendsContent() {
           <div className="glass-panel rounded-xl p-6 md:p-8">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
               <div>
-                <h3 className="font-sans text-headline-md text-xl font-bold text-on-surface">
-                  DOL Processing Velocity (Average Days)
+                <h3 className="font-sans text-headline-md text-xl font-bold text-on-surface flex items-center gap-2">
+                  <span>DOL Processing Velocity (Average Days)</span>
+                  <InfoTooltip text="Average calendar day processing timelines across PERM Analyst Review, Audit Review, and Prevailing Wage (ETA-9141) stages." />
                 </h3>
                 <p className="font-sans text-xs text-on-surface-variant mt-0.5">
                   Average analyst review duration for PERM applications by filing period

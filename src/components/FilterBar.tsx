@@ -1,7 +1,6 @@
-"use client";
-
 import React, { useState } from "react";
 import { searchEmployers, Employer } from "@/lib/dataService";
+import InfoTooltip from "./InfoTooltip";
 
 interface FilterBarProps {
   categories: string[];
@@ -62,9 +61,12 @@ export default function FilterBar({
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {/* Category Selector */}
         <div className="space-y-2">
-          <label className="font-mono text-label-mono text-secondary-fixed-dim uppercase tracking-wider block text-xs">
-            Category
-          </label>
+          <div className="flex items-center gap-1.5">
+            <label className="font-mono text-label-mono text-secondary-fixed-dim uppercase tracking-wider block text-xs">
+              Category
+            </label>
+            <InfoTooltip text="Immigrant visa preference category (e.g. EB-1A Extraordinary Ability, EB-2 PERM Advanced Degree, EB-2 NIW National Interest Waiver, EB-3 Skilled)." />
+          </div>
           <div className="relative">
             <select
               value={selectedCategory}
@@ -88,9 +90,12 @@ export default function FilterBar({
 
         {/* Priority Date Picker */}
         <div className="space-y-2">
-          <label className="font-mono text-label-mono text-secondary-fixed-dim uppercase tracking-wider block text-xs">
-            Priority Date
-          </label>
+          <div className="flex items-center gap-1.5">
+            <label className="font-mono text-label-mono text-secondary-fixed-dim uppercase tracking-wider block text-xs">
+              Priority Date
+            </label>
+            <InfoTooltip text="The official priority date when your PERM ETA-9089 was received by DOL or your I-140 petition was received by USCIS." />
+          </div>
           <div className="relative">
             <input
               type="date"
@@ -104,9 +109,12 @@ export default function FilterBar({
         {/* Service Center Dropdown */}
         <div className="space-y-2">
           <div className="flex justify-between items-center">
-            <label className="font-mono text-label-mono text-secondary-fixed-dim uppercase tracking-wider block text-xs">
-              Service Center
-            </label>
+            <div className="flex items-center gap-1.5">
+              <label className="font-mono text-label-mono text-secondary-fixed-dim uppercase tracking-wider block text-xs">
+                Service Center
+              </label>
+              <InfoTooltip text="USCIS Service Center processing your petition inventory snapshot (SRC = Texas, LIN = Nebraska, WAC = California, EAC = Vermont)." />
+            </div>
             {serviceCenter !== "ALL" && showServiceCenterWarning && (
               <span className="text-[10px] font-mono text-tertiary">Not available for I-140 stats</span>
             )}
@@ -146,9 +154,12 @@ export default function FilterBar({
       {/* Sponsoring Employer Autocomplete Input (Optional) */}
       {onEmployerChange && (
         <div className="mt-6 space-y-2 relative">
-          <label className="font-mono text-label-mono text-secondary-fixed-dim uppercase tracking-wider block text-xs">
-            Sponsoring Employer (Optional)
-          </label>
+          <div className="flex items-center gap-1.5">
+            <label className="font-mono text-label-mono text-secondary-fixed-dim uppercase tracking-wider block text-xs">
+              Sponsoring Employer (Optional)
+            </label>
+            <InfoTooltip text="Search Department of Labor PERM and LCA disclosures by sponsoring corporate employer name." />
+          </div>
           <div className="relative">
             <span
               aria-hidden="true"
