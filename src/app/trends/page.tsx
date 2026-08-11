@@ -6,7 +6,7 @@ import FilterBar from "@/components/FilterBar";
 import StatCard from "@/components/StatCard";
 import DataSourceBadge from "@/components/DataSourceBadge";
 import InfoTooltip from "@/components/InfoTooltip";
-import { getTrendsData, getClassificationOptions } from "@/lib/dataService";
+import { getTrendsData, getClassificationOptions, parsePriorityDate } from "@/lib/dataService";
 import { toPng } from "html-to-image";
 
 function TrendsContent() {
@@ -16,7 +16,7 @@ function TrendsContent() {
   const chartRef = useRef<HTMLDivElement>(null);
 
   const initialCat = searchParams.get("category") || "EB-2 PERM";
-  const initialDate = searchParams.get("date") || "2022-10";
+  const initialDate = searchParams.get("date") || "2022-10-15";
   const initialSC = searchParams.get("sc") || "ALL";
 
   const [categories, setCategories] = useState<string[]>([]);
@@ -36,7 +36,7 @@ function TrendsContent() {
     loadCategories();
   }, []);
 
-  // Update URL query params when filters change
+  // Update URL query params when manual Analyze action is performed
   const updateUrlParams = (cat: string, pd: string, sc: string) => {
     const params = new URLSearchParams();
     if (cat) params.set("category", cat);
@@ -46,30 +46,20 @@ function TrendsContent() {
     router.replace(`/trends?${params.toString()}`, { scroll: false });
   };
 
-  const handleCategoryChange = (val: string) => {
-    setCategory(val);
-    updateUrlParams(val, priorityDate, serviceCenter);
+  // Manual Analyze Trigger - Recalculates trends and updates URL only on click
+  const handleAnalyze = async () => {
+    setLoading(true);
+    updateUrlParams(category, priorityDate, serviceCenter);
+    const data = await getTrendsData(category, "5y");
+    setTrends(data);
+    setLoading(false);
   };
 
-  const handleDateChange = (val: string) => {
-    setPriorityDate(val);
-    updateUrlParams(category, val, serviceCenter);
-  };
-
-  const handleServiceCenterChange = (val: string) => {
-    setServiceCenter(val);
-    updateUrlParams(category, priorityDate, val);
-  };
-
+  // Run initial analysis once on mount
   useEffect(() => {
-    async function fetchTrends() {
-      setLoading(true);
-      const data = await getTrendsData(category, "5y");
-      setTrends(data);
-      setLoading(false);
-    }
-    fetchTrends();
-  }, [category, priorityDate, serviceCenter]);
+    handleAnalyze();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // PNG Chart Export handler
   const handleExportPng = async () => {
@@ -94,6 +84,8 @@ function TrendsContent() {
       setTimeout(() => setCopySuccess(false), 3000);
     }
   };
+
+  const parsedPd = parsePriorityDate(priorityDate);
 
   // Sample multi-year trend data for visualization fallback
   const sampleTrends = [
@@ -121,7 +113,7 @@ function TrendsContent() {
               Immigration Trends &amp; Velocity
             </h1>
             <p className="font-sans text-body-lg text-on-surface-variant mt-1 text-sm md:text-base">
-              Multi-year petition filing volume, approval rates, and processing times for {category}.
+              Multi-year petition filing volume, approval rates, and processing times for {category} (Priority Date: {parsedPd.formattedStr}).
             </p>
           </div>
 
@@ -150,11 +142,12 @@ function TrendsContent() {
           <FilterBar
             categories={categories.length > 0 ? categories : ["EB-1A", "EB-2 PERM", "EB-2 NIW", "EB-3"]}
             selectedCategory={category}
-            onCategoryChange={handleCategoryChange}
+            onCategoryChange={setCategory}
             priorityDate={priorityDate}
-            onPriorityDateChange={handleDateChange}
+            onPriorityDateChange={setPriorityDate}
             serviceCenter={serviceCenter}
-            onServiceCenterChange={handleServiceCenterChange}
+            onServiceCenterChange={setServiceCenter}
+            onSearch={handleAnalyze}
           />
         </div>
 
