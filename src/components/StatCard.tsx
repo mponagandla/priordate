@@ -24,7 +24,7 @@ export default function StatCard({
 }: StatCardProps) {
   return (
     <div
-      className={`glass-card rounded-lg p-5 flex flex-col justify-between glow-border transition-all duration-300 ${
+      className={`glass-card rounded-lg p-4 md:p-5 flex flex-col justify-between glow-border transition-all duration-300 overflow-hidden ${
         highlight
           ? "ring-1 ring-primary-container/50 bg-primary-container/5 shadow-[0_0_20px_rgba(0,209,255,0.15)]"
           : ""
@@ -48,7 +48,7 @@ export default function StatCard({
 
         <div className="flex items-baseline gap-2 my-1">
           <span
-            className={`font-sans text-[34px] md:text-[38px] leading-[44px] font-bold tracking-tight ${
+            className={`font-sans text-[30px] md:text-[36px] leading-[40px] font-bold tracking-tight ${
               highlight ? "text-primary-container" : "text-on-surface"
             }`}
           >
@@ -73,8 +73,8 @@ export default function StatCard({
       </div>
 
       {sourceName && (
-        <div className="mt-4 pt-3 border-t border-white/5">
-          <DataSourceBadge sourceName={sourceName} />
+        <div className="mt-3 pt-2.5 border-t border-white/5 overflow-hidden">
+          <DataSourceBadge sourceName={sourceName} compact={true} />
         </div>
       )}
     </div>
