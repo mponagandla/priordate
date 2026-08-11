@@ -14,6 +14,7 @@ function TrendsContent() {
   const router = useRouter();
 
   const chartRef = useRef<HTMLDivElement>(null);
+  const requestIdRef = useRef<number>(0);
 
   const initialCat = searchParams.get("category") || "EB-2 PERM";
   const initialDate = searchParams.get("date") || "2022-10-15";
@@ -24,6 +25,8 @@ function TrendsContent() {
   const [priorityDate, setPriorityDate] = useState<string>(initialDate);
   const [serviceCenter, setServiceCenter] = useState<string>(initialSC);
 
+  // Keep displayedCategory synchronized with trends dataset atomically
+  const [displayedCategory, setDisplayedCategory] = useState<string>(initialCat);
   const [loading, setLoading] = useState(true);
   const [trends, setTrends] = useState<any>(null);
   const [copySuccess, setCopySuccess] = useState(false);
@@ -46,13 +49,19 @@ function TrendsContent() {
     router.replace(`/trends?${params.toString()}`, { scroll: false });
   };
 
-  // Manual Analyze Trigger - Recalculates trends and updates URL only on click
+  // Manual Analyze Trigger - Atomically updates trends and displayedCategory only on completion
   const handleAnalyze = async () => {
+    const currentReqId = ++requestIdRef.current;
     setLoading(true);
     updateUrlParams(category, priorityDate, serviceCenter);
     const data = await getTrendsData(category, "5y");
-    setTrends(data);
-    setLoading(false);
+
+    // Guard against race conditions from out-of-order async responses
+    if (currentReqId === requestIdRef.current) {
+      setTrends(data);
+      setDisplayedCategory(category);
+      setLoading(false);
+    }
   };
 
   // Run initial analysis once on mount
@@ -113,7 +122,7 @@ function TrendsContent() {
               Immigration Trends &amp; Velocity
             </h1>
             <p className="font-sans text-body-lg text-on-surface-variant mt-1 text-sm md:text-base">
-              Multi-year petition filing volume, approval rates, and processing times for {category} (Priority Date: {parsedPd.formattedStr}).
+              Multi-year petition filing volume, approval rates, and processing times for {displayedCategory} (Priority Date: {parsedPd.formattedStr}).
             </p>
           </div>
 
@@ -151,54 +160,67 @@ function TrendsContent() {
           />
         </div>
 
-        {/* Dynamic Overview Stats */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-          <StatCard
-            label="5-Year Filing Volume"
-            value={totalVolume > 0 ? totalVolume.toLocaleString() : "745,000+"}
-            icon="trending_up"
-            sourceName="USCIS I-140 Statistics"
-            infoText="Cumulative count of I-140 petitions filed across all USCIS service centers over the last 5 fiscal years."
-          />
-          <StatCard
-            label="Average Approval Rate"
-            value={avgApprovalRate}
-            unit="%"
-            icon="check_circle"
-            highlight={true}
-            infoText="Mean approval percentage across all petitions processed in this preference category over 5 years."
-          />
-          <StatCard
-            label="Avg. PERM Processing"
-            value="195"
-            unit="days"
-            icon="schedule"
-            sourceName="DOL Processing Times"
-            infoText="Department of Labor FLAG system average analyst review duration in calendar days."
-          />
-          <StatCard
-            label="Data Freshness"
-            value="Quarterly"
-            icon="sync"
-            sourceName="DOL &amp; USCIS Open Data"
-            infoText="Frequency of official open data updates published by Department of Labor and USCIS."
-          />
-        </div>
+        {/* Loading Indicator or Data Views */}
+        {loading ? (
+          <div className="glass-panel rounded-xl p-12 text-center max-w-4xl mx-auto my-12 animate-pulse">
+            <span className="material-symbols-outlined text-[48px] text-primary-container animate-spin mb-4">
+              hourglass_empty
+            </span>
+            <h3 className="font-sans text-headline-md text-on-surface">Updating Immigration Trends...</h3>
+            <p className="font-sans text-body-md text-on-surface-variant mt-2">
+              Cross-referencing historical multi-year records for {category}
+            </p>
+          </div>
+        ) : (
+          <>
+            {/* Dynamic Overview Stats */}
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+              <StatCard
+                label="5-Year Filing Volume"
+                value={totalVolume > 0 ? totalVolume.toLocaleString() : "745,000+"}
+                icon="trending_up"
+                sourceName="USCIS I-140 Statistics"
+                infoText="Cumulative count of I-140 petitions filed across all USCIS service centers over the last 5 fiscal years."
+              />
+              <StatCard
+                label="Average Approval Rate"
+                value={avgApprovalRate}
+                unit="%"
+                icon="check_circle"
+                highlight={true}
+                infoText="Mean approval percentage across all petitions processed in this preference category over 5 years."
+              />
+              <StatCard
+                label="Avg. PERM Processing"
+                value="195"
+                unit="days"
+                icon="schedule"
+                sourceName="DOL Processing Times"
+                infoText="Department of Labor FLAG system average analyst review duration in calendar days."
+              />
+              <StatCard
+                label="Data Freshness"
+                value="Quarterly"
+                icon="sync"
+                sourceName="DOL &amp; USCIS Open Data"
+                infoText="Frequency of official open data updates published by Department of Labor and USCIS."
+              />
+            </div>
 
-        {/* Time-Series Charts Container (Target for PNG export) */}
-        <div ref={chartRef} className="space-y-8 bg-surface/40 p-4 md:p-6 rounded-2xl border border-white/5">
-          {/* Chart 1: Filing Volume & Approvals over Fiscal Year */}
-          <div className="glass-panel rounded-xl p-6 md:p-8">
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
-              <div>
-                <h3 className="font-sans text-headline-md text-xl font-bold text-on-surface flex items-center gap-2">
-                  <span>Filing Volume &amp; Approvals Trend ({category})</span>
-                  <InfoTooltip text="Year-over-year comparison of petitions received, approved, and denied." />
-                </h3>
-                <p className="font-sans text-xs text-on-surface-variant mt-0.5">
-                  Annual count of petitions received, approved, and denied
-                </p>
-              </div>
+            {/* Time-Series Charts Container (Target for PNG export) */}
+            <div ref={chartRef} className="space-y-8 bg-surface/40 p-4 md:p-6 rounded-2xl border border-white/5">
+              {/* Chart 1: Filing Volume & Approvals over Fiscal Year */}
+              <div className="glass-panel rounded-xl p-6 md:p-8">
+                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+                  <div>
+                    <h3 className="font-sans text-headline-md text-xl font-bold text-on-surface flex items-center gap-2">
+                      <span>Filing Volume &amp; Approvals Trend ({displayedCategory})</span>
+                      <InfoTooltip text="Year-over-year comparison of petitions received, approved, and denied." />
+                    </h3>
+                    <p className="font-sans text-xs text-on-surface-variant mt-0.5">
+                      Annual count of petitions received, approved, and denied
+                    </p>
+                  </div>
 
               <div className="flex items-center gap-4 font-mono text-xs">
                 <div className="flex items-center gap-1.5">
@@ -317,6 +339,8 @@ function TrendsContent() {
             </div>
           </div>
         </div>
+      </>
+    )}
       </div>
     </div>
   );
