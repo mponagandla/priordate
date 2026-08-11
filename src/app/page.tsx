@@ -9,7 +9,7 @@ import { getClassificationOptions, getCohortAnalysis } from "@/lib/dataService";
 export default function HomePage() {
   const [categories, setCategories] = useState<string[]>([]);
   const [category, setCategory] = useState<string>("EB-2 PERM");
-  const [priorityDate, setPriorityDate] = useState<string>("2022-10");
+  const [priorityDate, setPriorityDate] = useState<string>("2022-10-15");
   const [serviceCenter, setServiceCenter] = useState<string>("ALL");
   const [employer, setEmployer] = useState<string>("");
 

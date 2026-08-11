@@ -93,8 +93,8 @@ export default function FilterBar({
           </label>
           <div className="relative">
             <input
-              type="month"
-              value={priorityDate}
+              type="date"
+              value={priorityDate.length === 7 ? `${priorityDate}-15` : priorityDate}
               onChange={(e) => onPriorityDateChange(e.target.value)}
               className="w-full bg-surface-container-highest/60 border border-outline-variant/50 rounded-lg py-3 px-4 text-on-surface focus:border-primary-container focus:ring-1 focus:ring-primary-container transition-colors backdrop-blur-md font-sans text-body-md [color-scheme:dark]"
             />
