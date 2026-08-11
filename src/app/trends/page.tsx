@@ -218,42 +218,59 @@ function TrendsContent() {
 
             {/* Time Series Bar Chart */}
             <div className="space-y-6 my-4">
-              {activeTrends.map((t: any, idx: number) => {
-                const yr = t.fiscal_year || t.year;
-                const appr = t.approved || 0;
-                const rec = t.received || 100000;
-                const den = t.denied || 0;
-                const maxVal = 200000;
-
-                return (
-                  <div key={idx} className="space-y-1.5 font-mono text-xs">
-                    <div className="flex justify-between text-secondary-fixed-dim">
-                      <span className="font-bold text-on-surface">FY{yr}</span>
-                      <span>
-                        Approved: <strong className="text-primary-container">{appr.toLocaleString()}</strong> / Received: {rec.toLocaleString()}
-                      </span>
-                    </div>
-
-                    <div className="h-5 w-full bg-surface-container-highest rounded-md overflow-hidden flex gap-0.5 p-0.5 border border-white/10">
-                      <div
-                        style={{ width: `${Math.min(100, (appr / maxVal) * 100)}%` }}
-                        className="h-full bg-primary-container rounded-l"
-                        title={`Approved: ${appr.toLocaleString()}`}
-                      ></div>
-                      <div
-                        style={{ width: `${Math.min(100, ((rec - appr - den) / maxVal) * 100)}%` }}
-                        className="h-full bg-secondary/40"
-                        title={`Pending/Processing`}
-                      ></div>
-                      <div
-                        style={{ width: `${Math.min(100, (den / maxVal) * 100)}%` }}
-                        className="h-full bg-error/70 rounded-r"
-                        title={`Denied: ${den.toLocaleString()}`}
-                      ></div>
-                    </div>
-                  </div>
+              {(() => {
+                const maxVal = Math.max(
+                  ...activeTrends.map((t: any) => t.received || (t.approved + t.denied + t.pending) || 100000),
+                  10000
                 );
-              })}
+
+                return activeTrends.map((t: any, idx: number) => {
+                  const yr = t.fiscal_year || t.year;
+                  const rec = t.received || (t.approved + t.denied + t.pending) || 10000;
+                  const appr = t.approved || 0;
+                  const den = t.denied || 0;
+                  const pend = Math.max(0, rec - appr - den);
+
+                  const barWidthPct = Math.min(100, Math.max(15, Math.round((rec / maxVal) * 100)));
+                  const approvedPct = Math.round((appr / rec) * 100);
+                  const pendingPct = Math.round((pend / rec) * 100);
+                  const deniedPct = Math.max(0, 100 - approvedPct - pendingPct);
+
+                  return (
+                    <div key={idx} className="space-y-1.5 font-mono text-xs">
+                      <div className="flex justify-between text-secondary-fixed-dim">
+                        <span className="font-bold text-on-surface">FY{yr}</span>
+                        <span>
+                          Approved: <strong className="text-primary-container">{appr.toLocaleString()}</strong> ({approvedPct}%) / Denied: <strong className="text-error">{den.toLocaleString()}</strong> / Total: {rec.toLocaleString()}
+                        </span>
+                      </div>
+
+                      <div className="w-full bg-surface-container-highest/40 rounded-md p-1 border border-white/5">
+                        <div
+                          style={{ width: `${barWidthPct}%` }}
+                          className="h-5 rounded flex overflow-hidden border border-white/10 gap-0.5 transition-all duration-500"
+                        >
+                          <div
+                            style={{ width: `${approvedPct}%` }}
+                            className="h-full bg-primary-container relative group"
+                            title={`Approved: ${appr.toLocaleString()} (${approvedPct}%)`}
+                          ></div>
+                          <div
+                            style={{ width: `${pendingPct}%` }}
+                            className="h-full bg-secondary/40 relative group"
+                            title={`Pending: ${pend.toLocaleString()} (${pendingPct}%)`}
+                          ></div>
+                          <div
+                            style={{ width: `${deniedPct}%` }}
+                            className="h-full bg-error/80 relative group"
+                            title={`Denied: ${den.toLocaleString()} (${deniedPct}%)`}
+                          ></div>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                });
+              })()}
             </div>
 
             <div className="mt-6 pt-4 border-t border-white/5 flex justify-between items-center text-[11px] font-mono text-secondary-fixed-dim">
