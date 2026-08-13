@@ -1,0 +1,30 @@
+name: Track Repository Insights
+
+on:
+  schedule:
+    # Run daily at 02:00 UTC
+    - cron: '0 2 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  track-insights:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Run GitHub Repository Insights
+        uses: emillg/github-repo-insights@v1.1.0
+        with:
+          repos: ${{ github.repository }}
+          pat-token: ${{ secrets.INSIGHTS_PAT || secrets.PAT_TOKEN || secrets.GITHUB_TOKEN }}
+
+      - name: Commit and Push Insights Data
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "chart(insights): update repository insights data [skip ci]"
