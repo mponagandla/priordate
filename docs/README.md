@@ -10,7 +10,7 @@
   "title": "Top 10 Repositories by Visitors",
   "data": {
     "values": [
-      {"repository": "priordate", "views": 116}
+      {"repository": "priordate", "views": 140}
     ]
   },
   "mark": "bar",
@@ -30,7 +30,7 @@
   "title": "Top 10 Repositories by Git Clones",
   "data": {
     "values": [
-      {"repository": "priordate", "clones": 227}
+      {"repository": "priordate", "clones": 243}
     ]
   },
   "mark": "bar",
@@ -70,6 +70,8 @@
       {"date": "2026-08-13", "type": "Total Views", "value": 27},
       {"date": "2026-08-14", "type": "Total Views", "value": 0},
       {"date": "2026-08-15", "type": "Total Views", "value": 0},
+      {"date": "2026-08-16", "type": "Total Views", "value": 0},
+      {"date": "2026-08-17", "type": "Total Views", "value": 24},
       {"date": "2026-07-29", "type": "Unique Views", "value": 0},
       {"date": "2026-07-30", "type": "Unique Views", "value": 0},
       {"date": "2026-07-31", "type": "Unique Views", "value": 0},
@@ -87,7 +89,9 @@
       {"date": "2026-08-12", "type": "Unique Views", "value": 1},
       {"date": "2026-08-13", "type": "Unique Views", "value": 1},
       {"date": "2026-08-14", "type": "Unique Views", "value": 0},
-      {"date": "2026-08-15", "type": "Unique Views", "value": 0}
+      {"date": "2026-08-15", "type": "Unique Views", "value": 0},
+      {"date": "2026-08-16", "type": "Unique Views", "value": 0},
+      {"date": "2026-08-17", "type": "Unique Views", "value": 1}
     ]
   },
   "mark": "line",
@@ -147,6 +151,8 @@
       {"date": "2026-08-13", "type": "Total Clones", "value": 10},
       {"date": "2026-08-14", "type": "Total Clones", "value": 13},
       {"date": "2026-08-15", "type": "Total Clones", "value": 4},
+      {"date": "2026-08-16", "type": "Total Clones", "value": 5},
+      {"date": "2026-08-17", "type": "Total Clones", "value": 11},
       {"date": "2026-07-29", "type": "Unique Clones", "value": 0},
       {"date": "2026-07-30", "type": "Unique Clones", "value": 0},
       {"date": "2026-07-31", "type": "Unique Clones", "value": 0},
@@ -164,7 +170,9 @@
       {"date": "2026-08-12", "type": "Unique Clones", "value": 4},
       {"date": "2026-08-13", "type": "Unique Clones", "value": 4},
       {"date": "2026-08-14", "type": "Unique Clones", "value": 7},
-      {"date": "2026-08-15", "type": "Unique Clones", "value": 2}
+      {"date": "2026-08-15", "type": "Unique Clones", "value": 2},
+      {"date": "2026-08-16", "type": "Unique Clones", "value": 3},
+      {"date": "2026-08-17", "type": "Unique Clones", "value": 5}
     ]
   },
   "mark": "line",
@@ -200,5 +208,5 @@
 
 | Referral Source | Views | Unique Visitors |
 |-|-|-|
-| github.com | 17 | 1 |
+| github.com | 34 | 1 |
 
