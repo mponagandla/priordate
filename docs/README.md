@@ -30,7 +30,7 @@
   "title": "Top 10 Repositories by Git Clones",
   "data": {
     "values": [
-      {"repository": "priordate", "clones": 288}
+      {"repository": "priordate", "clones": 292}
     ]
   },
   "mark": "bar",
@@ -81,6 +81,7 @@
       {"date": "2026-08-24", "type": "Total Views", "value": 0},
       {"date": "2026-08-25", "type": "Total Views", "value": 0},
       {"date": "2026-08-26", "type": "Total Views", "value": 0},
+      {"date": "2026-08-27", "type": "Total Views", "value": 0},
       {"date": "2026-07-29", "type": "Unique Views", "value": 0},
       {"date": "2026-07-30", "type": "Unique Views", "value": 0},
       {"date": "2026-07-31", "type": "Unique Views", "value": 0},
@@ -109,7 +110,8 @@
       {"date": "2026-08-23", "type": "Unique Views", "value": 0},
       {"date": "2026-08-24", "type": "Unique Views", "value": 0},
       {"date": "2026-08-25", "type": "Unique Views", "value": 0},
-      {"date": "2026-08-26", "type": "Unique Views", "value": 0}
+      {"date": "2026-08-26", "type": "Unique Views", "value": 0},
+      {"date": "2026-08-27", "type": "Unique Views", "value": 0}
     ]
   },
   "mark": "line",
@@ -180,6 +182,7 @@
       {"date": "2026-08-24", "type": "Total Clones", "value": 5},
       {"date": "2026-08-25", "type": "Total Clones", "value": 7},
       {"date": "2026-08-26", "type": "Total Clones", "value": 6},
+      {"date": "2026-08-27", "type": "Total Clones", "value": 4},
       {"date": "2026-07-29", "type": "Unique Clones", "value": 0},
       {"date": "2026-07-30", "type": "Unique Clones", "value": 0},
       {"date": "2026-07-31", "type": "Unique Clones", "value": 0},
@@ -208,7 +211,8 @@
       {"date": "2026-08-23", "type": "Unique Clones", "value": 5},
       {"date": "2026-08-24", "type": "Unique Clones", "value": 3},
       {"date": "2026-08-25", "type": "Unique Clones", "value": 5},
-      {"date": "2026-08-26", "type": "Unique Clones", "value": 4}
+      {"date": "2026-08-26", "type": "Unique Clones", "value": 4},
+      {"date": "2026-08-27", "type": "Unique Clones", "value": 2}
     ]
   },
   "mark": "line",
@@ -244,5 +248,5 @@
 
 | Referral Source | Views | Unique Visitors |
 |-|-|-|
-| github.com | 32 | 1 |
+| github.com | 20 | 1 |
 
