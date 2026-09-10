@@ -30,7 +30,7 @@
   "title": "Top 10 Repositories by Git Clones",
   "data": {
     "values": [
-      {"repository": "priordate", "clones": 362}
+      {"repository": "priordate", "clones": 383}
     ]
   },
   "mark": "bar",
@@ -93,6 +93,8 @@
       {"date": "2026-09-05", "type": "Total Views", "value": 0},
       {"date": "2026-09-06", "type": "Total Views", "value": 0},
       {"date": "2026-09-07", "type": "Total Views", "value": 0},
+      {"date": "2026-09-08", "type": "Total Views", "value": 0},
+      {"date": "2026-09-09", "type": "Total Views", "value": 0},
       {"date": "2026-07-29", "type": "Unique Views", "value": 0},
       {"date": "2026-07-30", "type": "Unique Views", "value": 0},
       {"date": "2026-07-31", "type": "Unique Views", "value": 0},
@@ -133,7 +135,9 @@
       {"date": "2026-09-04", "type": "Unique Views", "value": 0},
       {"date": "2026-09-05", "type": "Unique Views", "value": 0},
       {"date": "2026-09-06", "type": "Unique Views", "value": 0},
-      {"date": "2026-09-07", "type": "Unique Views", "value": 0}
+      {"date": "2026-09-07", "type": "Unique Views", "value": 0},
+      {"date": "2026-09-08", "type": "Unique Views", "value": 0},
+      {"date": "2026-09-09", "type": "Unique Views", "value": 0}
     ]
   },
   "mark": "line",
@@ -216,6 +220,8 @@
       {"date": "2026-09-05", "type": "Total Clones", "value": 6},
       {"date": "2026-09-06", "type": "Total Clones", "value": 1},
       {"date": "2026-09-07", "type": "Total Clones", "value": 11},
+      {"date": "2026-09-08", "type": "Total Clones", "value": 2},
+      {"date": "2026-09-09", "type": "Total Clones", "value": 19},
       {"date": "2026-07-29", "type": "Unique Clones", "value": 0},
       {"date": "2026-07-30", "type": "Unique Clones", "value": 0},
       {"date": "2026-07-31", "type": "Unique Clones", "value": 0},
@@ -256,7 +262,9 @@
       {"date": "2026-09-04", "type": "Unique Clones", "value": 3},
       {"date": "2026-09-05", "type": "Unique Clones", "value": 3},
       {"date": "2026-09-06", "type": "Unique Clones", "value": 1},
-      {"date": "2026-09-07", "type": "Unique Clones", "value": 7}
+      {"date": "2026-09-07", "type": "Unique Clones", "value": 7},
+      {"date": "2026-09-08", "type": "Unique Clones", "value": 1},
+      {"date": "2026-09-09", "type": "Unique Clones", "value": 10}
     ]
   },
   "mark": "line",
